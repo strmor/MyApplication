@@ -101,6 +101,9 @@ public class MainActivity2 extends ActionBarActivity {
             RunProcess("netcfg eth0 up");
 
 
+
+
+            
             RunProcess("netcfg eth0 dhcp");
 
 
