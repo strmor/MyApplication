@@ -1,5 +1,7 @@
 package com.example.morten.myapplication2;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -52,6 +54,13 @@ public class Networkdevice {
                 InetAddress address = ia.getAddress();
 
                 returnString += " Address=" + ia.getAddress().getAddress() + " HostAddress" +ia.getAddress().getHostAddress() +'\n';
+
+                if(address instanceof Inet4Address)
+                    returnString += " v4 address!";
+
+
+                if(address instanceof Inet6Address)
+                    returnString += " v6 address!";
 
                 if(address.isLoopbackAddress())
                 {

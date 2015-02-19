@@ -14,7 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
@@ -89,16 +94,47 @@ public class MainActivity2 extends ActionBarActivity {
 //        logtextView.append(emInstance + "");
 
 
-        Runtime proc = Runtime.getRuntime();
 
         try {
-            proc.exec(new String[]{"su", "-c", "netcfg eth0 up"});
-        } catch (IOException e) {
+
+
+            RunProcess("netcfg eth0 up");
+
+
+            RunProcess("netcfg eth0 dhcp");
+
+
+
+
+        } catch (Exception e) {
             String stackTrace = Log.getStackTraceString(e);
 
             viewById.setText(stackTrace);
         }
 
+    }
+
+    private void RunProcess(String command) throws IOException {
+        Process p = Runtime.getRuntime().exec(new String[]{"su", "-c", command});
+
+
+        InputStream stdout = p.getInputStream();
+
+        BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(stdout));
+
+
+        StringBuilder log=new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            log.append(line + "\n");
+        }
+
+
+        if(log != null && log.length() != 0)
+            viewById.setText(log.toString());
+        else
+            viewById.setText("No output from porcess");
     }
 
     private void TimerMethod()
